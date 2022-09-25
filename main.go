@@ -17,6 +17,7 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/joho/godotenv"
 	"github.com/shomali11/slacker"
 )
 
@@ -33,8 +34,14 @@ func PrintCommandEvents(analyticsChannel <-chan *slacker.CommandEvent) {
 }
 
 func main() {
-	os.Setenv("SLACK_BOT_TOKEN", "xoxb-4125472794181-4141081749697-KndrhUe6c9mbp30mAMX2NQNv")
-	os.Setenv("SLACK_APP_TOKEN", "xapp-1-A043BRUBW95-4152147416112-d4a58c27c418cea968dbc2b2e892c30ec5e286c2f70ae34166e62822801ef879")
+	// Set environment variables
+	godotenv.Load(".env")
+
+	slackBotToken := os.Getenv("SLACK_BOT_TOKEN")
+	slackAppToken := os.Getenv("SLACK_APP_TOKEN")
+
+	os.Setenv("SLACK_BOT_TOKEN", slackBotToken)
+	os.Setenv("SLACK_APP_TOKEN", slackAppToken)
 
 	// Define bot instance and setup go routine
 	bot := slacker.NewClient(os.Getenv("SLACK_BOT_TOKEN"), os.Getenv("SLACK_APP_TOKEN"))
